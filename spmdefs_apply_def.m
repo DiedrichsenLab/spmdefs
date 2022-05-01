@@ -2,8 +2,8 @@ function spmdefs_apply_def(Def,mat,fnames,intrp,ofnames)
 % function spmdefs_apply_def(Def,mat,fnames,intrp,ofnames)
 % Warp an image or series of images according to a deformation field
 % INPUT: 
-% Def: Deformation field image (y_*) 
-% mat: Affine transformation matrix of the output 
+% Def: Deformation field data {cell}
+% mat: Affine transformation matrix of the atlas (output)
 % fnames: File names of the input 
 % interp: interpolation 
 % ofnames: outfilenames 
