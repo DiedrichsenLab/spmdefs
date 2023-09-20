@@ -4,7 +4,7 @@ function spmdefs_save_def(Def,mat,ofname)
 % INPUT: 
 %   Def: deformation field 
 %   mat: transformation matrix 
-%   ofname: outfilename (saved as 'y_' ofname '.nii')
+%   ofname: outfilename 
 % 
 
 % taken from spm_defs 
@@ -14,13 +14,12 @@ function spmdefs_save_def(Def,mat,ofname)
 % $Id: spm_defs.m 991 2007-11-02 14:01:28Z john $
 if isempty(ofname), return; end;
 
-fname = ['y_' ofname '.nii'];
 dim   = [size(Def{1},1) size(Def{1},2) size(Def{1},3) 1 3]; % was 1 3 
 dtype = 'FLOAT32-BE';
 off   = 0;
 scale = 1;
 inter = 0;
-dat   = file_array(fname,dim,dtype,off,scale,inter);
+dat   = file_array(ofname,dim,dtype,off,scale,inter);
 
 N      = nifti;
 N.dat  = dat;
