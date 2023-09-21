@@ -1,31 +1,34 @@
-function spmdefs_apply_def(Def,mat,fnames,intrp,ofnames)
+function spmdefs_apply_def(Def,mat,fname,intrp,ofname)
 % function spmdefs_apply_def(Def,mat,fnames,intrp,ofnames)
 % Warp an image or series of images according to a deformation field
 % INPUT: 
 % Def: Deformation field data {cell}
 % mat: Affine transformation matrix of the atlas (output)
-% fnames: File names of the input 
+% fname: File name of the input 
 % interp: interpolation 
-% ofnames: outfilenames 
+% ofname: outfilename 
+
 intrp = [intrp*[1 1 1], 0 0 0];
 
-for i=1:size(fnames,1),
-    V = spm_vol(fnames(i,:));
-    M = inv(V.mat);
-    [pth,nam,ext] = spm_fileparts(fnames(i,:));
-    if (nargin<5)
-        ofname = fullfile(pth,['w',nam,ext]);
-    else 
-        ofname= deblank(ofnames(i,:)); 
-    end;
+[pth,nam,ext] = spm_fileparts(fname);
+if (nargin<5)
+    ofname = fullfile(pth,['w',nam,ext]);
+else 
+    ofname= deblank(ofname); 
+end;
+
+V = spm_vol(fname);
+    
+for i=1:length(V)
+    M = inv(V(i).mat);
     Vo = struct('fname',ofname,...
                 'dim',[size(Def{1},1) size(Def{1},2) size(Def{1},3)],...
-                'dt',V.dt,...
-                'pinfo',V.pinfo,...
+                'dt',V(i).dt,...
+                'pinfo',V(i).pinfo,...
                 'mat',mat,...
-                'n',V.n,...
-                'descrip',V.descrip);
-    C  = spm_bsplinc(V,intrp);
+                'n',V(i).n,...
+                'descrip',V(i).descrip);
+    C  = spm_bsplinc(V(i),intrp);
     Vo = spm_create_vol(Vo);
     for j=1:size(Def{1},3)
         d0    = {double(Def{1}(:,:,j)), double(Def{2}(:,:,j)),double(Def{3}(:,:,j))};
@@ -36,4 +39,3 @@ for i=1:size(fnames,1),
         Vo    = spm_write_plane(Vo,dat,j);
     end;
 end;
-return;
