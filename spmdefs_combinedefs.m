@@ -1,8 +1,8 @@
 function [Def,mat] = spmdefs_combinedefs(Def,mat,varargin)
 % function [Def,mat] = spmdefs_combinedefs(Def1,mat1,Def2,mat2,def3,mat3...)
 % Combines different deformations 
-% Are applied in series Def1 first, then Def1, 
-
+% Are applied in series Def1 first, then Def2, (for mode image)
+% The results have the image size of the last deformation 
 
 Ndefs = floor(length(varargin)/2);
 for i=1:Ndefs
