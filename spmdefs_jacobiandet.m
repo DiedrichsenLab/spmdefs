@@ -2,11 +2,16 @@ function [dJ,mat]=spmdefs_jacobiandet(filename,varargin)
 % function [dJ,mat]=spmdefs_jacobiandet(filename,varargin)
 % INPUT: 
 %   filename: deformation field / filename 
+% OPTIONAL:
+%   mask: 
+%   outfilename: 
+%   logtransform, 1
 % OUTPUT: 
 %   
 mask=''; 
 outfilename=''; 
-vararginoptions(varargin,{'mask','outfilename'}); 
+logtransform = 0; 
+vararginoptions(varargin,{'mask','outfilename','logtransform'}); 
 
 [dir,name,ext]=spm_fileparts(filename); 
 if (ext=='.mat')
@@ -61,4 +66,7 @@ end;
 VO=V(1); 
 VO.fname=outfilename; 
 VO.dt=[16 1]; 
+if logtransform==1
+    D=log(D);
+end
 spm_write_vol(VO,D); 
